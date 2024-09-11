@@ -61,6 +61,9 @@ class Endboss extends MovableObject {
         this.loadImages(this.IMAGES_ATTACK);
         this.loadImages(this.IMAGES_HURT);
         this.loadImages(this.IMAGES_DEAD);
+        sounds.push(this.attacking_sound);
+        sounds.push(this.dead_sound);
+        sounds.push(this.hurt_sound);
         this.animate();
         this.x = 7500;
     }

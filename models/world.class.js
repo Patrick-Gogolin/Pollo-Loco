@@ -68,7 +68,7 @@ class World {
         this.thrownObjects.forEach(bottle => {
             if(bottle.y > groundLevel) {
                 bottle.broken = true;
-                bottle.break_sound.play();
+                bottle.break_sound.play()
                 this.removeThrowableBottleFromWorld(bottle);
             }
         });
@@ -100,7 +100,7 @@ class World {
                 endboss.hitByBottle();
                 console.log(endboss.energy);
                 bottle.broken = true;
-                bottle.break_sound.play(); 
+                bottle.break_sound.play();
                 this.removeThrowableBottleFromWorld(bottle);
             }
         });

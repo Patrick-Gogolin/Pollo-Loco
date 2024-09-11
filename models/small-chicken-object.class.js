@@ -17,6 +17,7 @@ class SmallChicken extends MovableObject {
         super().loadImage('img_pollo_locco/img/3_enemies_chicken/chicken_small/1_walk/1_w.png');
         this.loadImages(this.IMAGES_WALKING);
         this.loadImages(this.IMAGES_DEAD);
+        sounds.push(this.hurt_sound);
 
         this.x = 350 + Math.random() * 6500;
         this.speed = 0.15 + Math.random() * 0.25;

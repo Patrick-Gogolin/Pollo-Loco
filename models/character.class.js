@@ -89,6 +89,12 @@ class Character extends MovableObject {
         this.loadImages(this.IMAGES_JUMPING);
         this.loadImages(this.IMAGES_DEAD);
         this.loadImages(this.IMAGES_HURT);
+        sounds.push(this.walking_sound);
+        sounds.push(this.snorring_sound);
+        sounds.push(this.jump_sound);
+        sounds.push(this.hurt_sound);
+        sounds.push(this.coin_collect_sound);
+        sounds.push(this.bottle_collect_sound);
         this.applyGravity();
         this.checkIfNotMoving();
         this.animate();
@@ -164,7 +170,7 @@ class Character extends MovableObject {
         this.speed = this.walkSpeed;
         this.increaseXCoordinate();
         this.otherDirection = false;
-        walking_sound.play();
+        this.walking_sound.play();
         this.snorring_sound.pause();
         this.characterMoved();
     }

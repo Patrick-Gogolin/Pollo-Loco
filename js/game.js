@@ -24,36 +24,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-document.addEventListener('DOMContentLoaded', () => {
-    const button = document.getElementById('pause-music-button');
-    button.addEventListener('click', (event) => {
-      toggleMusic(button, event);
-    });
-});
-
-function toggleMusic(button, event) {
-    if (mainMusicIsPlaying) {
-        turnMusicOn(button, event);
-    }
-    else if (!mainMusicIsPlaying) {
-        turnMusicOff(button, event);
-    }
-}
-
-function turnMusicOn(button, event) {
-    world.main_music.pause();
-    button.innerText = "Turn Music On";
-    mainMusicIsPlaying = false;
-    event.target.blur();
-}
-
-function turnMusicOff(button, event) {
-    world.main_music.play();
-    button.innerText = "Turn Music Off";
-    mainMusicIsPlaying = true;
-    event.target.blur();
-}
-
 window.addEventListener('keydown', (event) => {
     if (event.keyCode == 39) {
         keyboard.RIGHT = true;

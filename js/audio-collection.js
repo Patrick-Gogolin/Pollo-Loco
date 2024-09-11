@@ -1,25 +1,68 @@
 let soundeffectsOn = true;
+let sounds = [];
+let main_music = new Audio('audio/mainMusic.mp3');
 
-let sounds = [
-    
-]
-let walking_sound = new Audio('audio/running.mp3');
-let snorring_sound = new Audio('audio/snorring.mp3');
-let jump_sound = new Audio('audio/jump.mp3');
-let hurt_sound_character = new Audio('audio/hurt.mp3');
-let coin_collect_sound = new Audio('audio/collectCoin.mp3');
-let bottle_collect_sound = new Audio('audio/bottleCollect.mp3');
-let hurt_sound_chicken = new Audio('audio/chickenHurt.mp3');
-let hurt_sound_small_chicken = new Audio('audio/smallChickenHurt.mp3');
-let attacking_sound_endboss = new Audio('audio/chickenAttack.mp3');
-let dead_sound_endboss = new Audio('audio/endbossDied.mp3');
-let hurt_sound_endboss = new Audio('audio/endbossHurt.mp3');
-let break_sound = new Audio('audio/bottleBroken.mp3');
 
+document.addEventListener('DOMContentLoaded', () => {
+    const button = document.getElementById('pause-music-button');
+    button.addEventListener('click', (event) => {
+      toggleMusic(button, event);
+    });
+});
+
+function toggleMusic(button, event) {
+    if (mainMusicIsPlaying) {
+        turnMusicOn(button, event);
+    }
+    else if (!mainMusicIsPlaying) {
+        turnMusicOff(button, event);
+    }
+}
+
+function turnMusicOn(button, event) {
+    world.main_music.pause();
+    button.innerText = "Turn Music On";
+    mainMusicIsPlaying = false;
+    event.target.blur();
+}
+
+function turnMusicOff(button, event) {
+    world.main_music.play();
+    button.innerText = "Turn Music Off";
+    mainMusicIsPlaying = true;
+    event.target.blur();
+}
 
 document.addEventListener('DOMContentLoaded', () => {
     const button = document.getElementById('pause-soundeffects-button');
     button.addEventListener('click', (event) => {
-        button.innerText = "Turn Soundeffects on";
+        toggleSoundEffects(button, event)
     });
 });
+
+function toggleSoundEffects(button, event) {
+    if(soundeffectsOn) {
+        muteSounds(button, event);
+    }
+    else if(!soundeffectsOn) {
+        unmuteSounds(button, event);
+    }
+}
+
+let muteSounds = (button, event) => {
+    sounds.forEach(sound => {
+        sound.volume = 0; 
+    });
+    soundeffectsOn = false;
+    button.innerText = "Turn Soundeffects on";
+    event.target.blur();
+};
+
+let unmuteSounds = (button, event) => {
+    sounds.forEach(sound => {
+        sound.volume = 1;
+    });
+    soundeffectsOn = true;
+    button.innerText = "Turn Soundeffects off";
+    event.target.blur();
+};
