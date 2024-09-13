@@ -15,6 +15,7 @@ body {
     font-family: 'zabars', Arial, Helvetica, sans-serif;
     background-image: url(img_pollo_locco/img/desert-landscape.jpg);
     background-position: center;
+    background-size: cover;
     margin: 0;
     min-height: 100vh;
 }
@@ -27,12 +28,39 @@ h1 {
     
 }
 
+h2 {
+    font-size: 3rem;
+    color: #FFDE01;
+    margin-bottom: 0.75em;
+}
 
 canvas {
     background-image: url(img_pollo_locco/img/9_intro_outro_screens/start/startscreen_1.png);
     background-position: center;
     background-size: 720px 480px;
     display: block;
+}
+
+.help-container {
+    width: 720px;
+    height: 480px;
+    background-color: rgba(122, 122, 122, 0.7);
+}
+
+.headline-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.controll-instruction-container {
+    display: flex;
+    flex-direction: column;
+    width: calc(100%-1em);
+    padding: 0em 1em;
+    font-size: 1.5rem;
+    gap: 2em;
+    color: #FFDE01;
 }
 
 .container-for-buttons {
@@ -42,15 +70,44 @@ canvas {
 
 .button {
     font-family: 'zabars', Arial, Helvetica, sans-serif;
-    font-size: 1.5rem;
-    padding: 1em 2em;
+    font-size: 1.25rem;
+    padding: 0.5em 1.5em;
     margin-top: 1em;
     background-color: #FFDE01;
     border: solid 5px black;
+    transition: transform .3s ease-in-out;
+}
+
+.button:hover {
+    cursor: pointer;
+    background-color: #f9e878;
+    transform: scale(1.1);
 }
 
 .play-button:hover {
    cursor: pointer;
+}
+
+.overlay-container {
+    background-color: black;
+    z-index: 999; 
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.rotate-your-device-img-container img {
+    width: 74px;
+    height: 74px;
+}
+
+.d-none {
+    display: none;
 }
 
 @media only screen and (max-width: 720px) {

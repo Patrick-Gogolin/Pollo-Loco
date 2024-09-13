@@ -24,7 +24,6 @@ class ThrowableObject extends MovableObject {
         super().loadImage('img_pollo_locco/img/6_salsa_bottle/salsa_bottle.png');
         this.loadImages(this.THROWN_BOTTLE_IMAGES);
         this.loadImages(this.THROWN_BOTTLE_IMAGES_SPLASH);
-        sounds.push(this.break_sound);
     }
 
     applyGravityForBottle() {

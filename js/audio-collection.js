@@ -1,6 +1,7 @@
 let soundeffectsOn = true;
 let sounds = [];
 let main_music = new Audio('audio/mainMusic.mp3');
+let mainMusicIsPlaying = true;
 
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -12,24 +13,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function toggleMusic(button, event) {
     if (mainMusicIsPlaying) {
-        turnMusicOn(button, event);
+        turnMusicOff(button, event);
     }
     else if (!mainMusicIsPlaying) {
-        turnMusicOff(button, event);
+        turnMusicOn(button, event);
     }
 }
 
 function turnMusicOn(button, event) {
-    world.main_music.pause();
-    button.innerText = "Turn Music On";
-    mainMusicIsPlaying = false;
+    world.main_music.play();
+    button.innerText = "Turn Music Off";
+    mainMusicIsPlaying = true;
     event.target.blur();
 }
 
 function turnMusicOff(button, event) {
-    world.main_music.play();
-    button.innerText = "Turn Music Off";
-    mainMusicIsPlaying = true;
+    world.main_music.pause();
+    button.innerText = "Turn Music On";
+    mainMusicIsPlaying = false;
     event.target.blur();
 }
 

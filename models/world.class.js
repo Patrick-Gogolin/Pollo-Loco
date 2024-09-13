@@ -13,7 +13,6 @@ class World {
     throwableObjects = [];
     thrownObjects = [];
     main_music = new Audio('audio/mainMusic.mp3');
-    allSoundeffects = [];
 
     constructor(canvas, keyboard){
         this.ctx = canvas.getContext('2d');
@@ -68,7 +67,9 @@ class World {
         this.thrownObjects.forEach(bottle => {
             if(bottle.y > groundLevel) {
                 bottle.broken = true;
-                bottle.break_sound.play()
+                if(soundeffectsOn){
+                    bottle.break_sound.play();
+                }
                 this.removeThrowableBottleFromWorld(bottle);
             }
         });
@@ -87,7 +88,9 @@ class World {
             if(enemy.isCollidingWithThrownBottle(enemy, bottle)) {
                 enemy.hitByBottle();
                 bottle.broken = true;
-                bottle.break_sound.play();
+                if(soundeffectsOn){
+                    bottle.break_sound.play();
+                }
                 enemy.screams();   
                 this.removeThrowableBottleFromWorld(bottle);
             }
@@ -100,7 +103,9 @@ class World {
                 endboss.hitByBottle();
                 console.log(endboss.energy);
                 bottle.broken = true;
-                bottle.break_sound.play();
+                if(soundeffectsOn){ // HIER WEITER
+                    bottle.break_sound.play();
+                }
                 this.removeThrowableBottleFromWorld(bottle);
             }
         });

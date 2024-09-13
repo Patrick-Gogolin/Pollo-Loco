@@ -35,10 +35,32 @@
 
     </canvas>
 
+    <div class="help-container d-none" id="help-container">
+        <div class="headline-container">
+            <h2>Controlls</h2>
+        </div>
+        <div class="controll-instruction-container">
+            <p>Move Right = Press RIGHT ARROW KEY</p>
+            <p>Move Left = Press LEFT ARROW KEY</p>
+            <p>Jump = Press SPACE</p>
+            <p>Throw Bottle = Press "D"</p>
+            <p>Hurt Chicken = Jump on Chicken</p>
+            <p>Hurt Endboss = Throw Salsabottles on Endboss</p>
+        </div>
+    </div>
+
     <div class="container-for-buttons">
         <button class="button" id="play-button">Play</button>
         <button class="button" id="pause-music-button" disabled>Turn Music off</button>
-        <button class="button" id="pause-soundeffects-button">Turn Soundeffects off</button>
+        <button class="button" id="pause-soundeffects-button" disabled>Turn Soundeffects off</button>
+        <button onclick="toggleControlls()" class="button" id="help-button">Controlls</button>
+    </div>
+
+    <div class="overlay-container d-none" id="overlay">
+        <div class="rotate-your-device-img-container">
+            <img src="img_pollo_locco/img/rotateDevice.png" alt="">
+        </div>
+
     </div>
 </body>
 </html>
