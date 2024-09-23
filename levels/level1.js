@@ -1,5 +1,15 @@
 let level1;
 
+/**
+ * Initializes level 1 by creating a new Level object with various game elements,
+ * including chickens, an end boss, small chickens, clouds, background objects,
+ * and collectible items like coins and bottles.
+ *
+ * This function populates the level with predefined quantities and types of objects,
+ * setting up the game environment for the player.
+ *
+ * @returns {void} This function does not return a value.
+ */
 function initLevel() {
 
     
@@ -19,7 +29,6 @@ level1 = new Level( // in die Variable level 1 wird ein neues Objekt level gespe
     new Chicken(),
     new Chicken(),
     new Chicken()
-    
     ],
     [
     new Endboss()
@@ -39,7 +48,18 @@ level1 = new Level( // in die Variable level 1 wird ein neues Objekt level gespe
     new SmallChicken()
     ],
     [
-        new Cloud()
+        new Cloud(),
+        new Cloud(),
+        new Cloud(),
+        new Cloud(),
+        new Cloud(),
+        new Cloud(),
+        new Cloud(),
+        new Cloud(),
+        new Cloud(),
+        new Cloud(),
+
+      
     ],
     [
         new BackgroundObject('img_pollo_locco/img/5_background/layers/air.png', -719),

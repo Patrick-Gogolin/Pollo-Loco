@@ -1,3 +1,7 @@
+/**
+ * Represents a character in the game.
+ * Extends the MovableObject class and includes properties and methods for character actions.
+ */
 class Character extends MovableObject {
     height = 250;
     y = 180;
@@ -9,6 +13,8 @@ class Character extends MovableObject {
     hurtSoundPlayed = false;
     coins = 0;
     bottles = 0;
+    isFalling = false;
+    
 
     IMAGES_LONG_IDLE = [
         'img_pollo_locco/img/2_character_pepe/1_idle/long_idle/I-11.png',
@@ -80,7 +86,11 @@ class Character extends MovableObject {
     hurt_sound = new Audio('audio/hurt.mp3');
     coin_collect_sound = new Audio('audio/collectCoin.mp3');
     bottle_collect_sound = new Audio('audio/bottleCollect.mp3');
+    dead_sound = new Audio('audio/characterDead.mp3');
     
+     /**
+     * Creates an instance of the Character class.
+     */
     constructor() {
         super().loadImage('img_pollo_locco/img/2_character_pepe/1_idle/idle/I-1.png');
         this.loadImages(this.IMAGES_LONG_IDLE);
@@ -95,11 +105,15 @@ class Character extends MovableObject {
         sounds.push(this.hurt_sound);
         sounds.push(this.coin_collect_sound);
         sounds.push(this.bottle_collect_sound);
+        sounds.push(this.dead_sound);
         this.applyGravity();
         this.checkIfNotMoving();
         this.animate();
     }
 
+    /**
+     * Checks if the character has not moved for a long time and updates the state.
+     */
     checkIfNotMoving() {
         setInterval(() => {
             let currentTime = new Date().getTime();
@@ -110,16 +124,25 @@ class Character extends MovableObject {
         }, 100);
     }
 
+     /**
+     * Updates the last move time and sets the notMovedLong state to false.
+     */
     characterMoved() {
         this.lastMoveTime = new Date().getTime();
         this.notMovedLong = false;
     }
 
+     /**
+     * Animates the character by applying physics and updating animations.
+     */
     animate(){
         this.applyCharacterPhysics();
         this.updateCharacterAnimation();
     }
 
+     /**
+     * Applies character movement physics based on keyboard input.
+     */
     applyCharacterPhysics() {
         setInterval(() => {
             this.walking_sound.pause();
@@ -141,11 +164,16 @@ class Character extends MovableObject {
                 this.world.camera_x = -this.x + 100;
         }}, 1000 / 60);
         }
-
+    
+    /**
+     * Updates the character's animation based on its state (e.g., jumping, idle, walking).
+     */
     updateCharacterAnimation() {
         setInterval(() => { 
             if (this.isDead()) {
                 this.playAnimationWhenDead(this.IMAGES_DEAD);
+                stopGame();
+                this.dead_sound.play();
             } else if (this.isHurt()) {
                 this.playHurtAnimation();
             } else if (this.isAboveGround()) {
@@ -162,10 +190,19 @@ class Character extends MovableObject {
         }, 100);
     }
 
+    /**
+    * Checks if the character is currently falling.
+    * @returns {boolean} True if the character is falling (speedY < 0), otherwise false.
+    */
     characterIsFalling(){
         return this.speedY < 0;
     }
 
+    /**
+    * Moves the character to the right.
+    * Increases the character's speed to walk speed, updates the x-coordinate,
+    * plays the walking sound, pauses the snoring sound, and marks the character as moved.
+    */
     characterMoveRight() {
         this.speed = this.walkSpeed;
         this.increaseXCoordinate();
@@ -175,6 +212,11 @@ class Character extends MovableObject {
         this.characterMoved();
     }
 
+    /**
+    * Moves the character to the left.
+    * Increases the character's speed to walk speed, updates the x-coordinate,
+    * plays the walking sound, pauses the snoring sound, and marks the character as moved.
+    */
     characterMoveLeft() {
         this.speed = this.walkSpeed;
         this.decreaseXCoordinate();
@@ -184,6 +226,12 @@ class Character extends MovableObject {
         this.characterMoved();
     }
 
+    /**
+    * Makes the character jump.
+    * Increases the character's y-coordinate to simulate jumping,
+    * marks the character as moved, resets the jump sound, and plays it.
+    * Also pauses the snoring sound during the jump.
+    */
     characterJump() {
         this.increaseYCoordinate();
         this.characterMoved();
@@ -192,6 +240,10 @@ class Character extends MovableObject {
         this.snorring_sound.pause();
     }
 
+    /**
+    * Plays the hurt animation for the character.
+    * Displays the hurt images and plays the hurt sound if it hasn't been played already.
+    */
     playHurtAnimation(){
         this.playAnimation(this.IMAGES_HURT);
         if(!this.hurtSoundPlayed) {
@@ -200,6 +252,11 @@ class Character extends MovableObject {
         }
     }
 
+    /**
+    * Plays the jump animation for the character.
+    * Resets the current image if the character was not previously above ground,
+    * and updates the state to indicate the character is now in the air.
+    */
     playJumpAnimation() {
         if (!this.wasAboveGround) {
             this.currentImage = 0;
@@ -209,12 +266,23 @@ class Character extends MovableObject {
         this.playAnimation(this.IMAGES_JUMPING);
     }
 
+    /**
+    * Plays the idle animation for the character.
+    * Resets the state to indicate the character is no longer above ground
+    * and ensures that the hurt sound has not been played.
+    */
     playIdleAnimation() {
         this.playAnimation(this.IMAGES_IDLE);
         this.wasAboveGround = false;
         this.hurtSoundPlayed = false;
     }
 
+    /**
+    * Plays the sleeping animation for the character.
+    * This animation is displayed when the character has not moved for a while.
+    * It plays the snoring sound, and resets the state to indicate the character
+    * is no longer above ground and that the hurt sound has not been played.
+    */
     playSleepingAnimation() {
         this.playAnimation(this.IMAGES_LONG_IDLE);
         this.snorring_sound.play();
@@ -222,18 +290,32 @@ class Character extends MovableObject {
         this.hurtSoundPlayed = false;
     }
 
+    /**
+    * Plays the walking animation for the character.
+    * Sets the current image to the walking animation sequence.
+    * Resets the flags indicating whether the character is above ground
+    * and if a hurt sound has been played.
+    */
     playWalkingAnimation(){
         this.playAnimation(this.IMAGES_WALKING);
         this.wasAboveGround = false;
         this.hurtSoundPlayed = false;
     }
 
+    /**
+    * Increments the coin count for the character by one.
+    * Resets the coin collection sound to the beginning and plays it.
+    */
     collectCoin() {
         this.coin_collect_sound.currentTime = 0;
         this.coins ++;
         this.coin_collect_sound.play();
     }
 
+    /**
+    * Increments the bottle count for the character by one.
+    * Resets the bottle collection sound to the beginning and plays it.
+    */
     collectBottle(){
         this.bottle_collect_sound.currentTime = 0;
         this.bottles ++;

@@ -1,3 +1,7 @@
+/**
+ * Represents the end boss character in the game.
+ * Extends the MovableObject class.
+ */
 class Endboss extends MovableObject {
 
     height = 400;
@@ -11,8 +15,13 @@ class Endboss extends MovableObject {
     attacking_sound = new Audio('audio/chickenAttack.mp3');
     dead_sound = new Audio('audio/endbossDied.mp3');
     hurt_sound = new Audio('audio/endbossHurt.mp3');
+    win_sound = new Audio('audio/winGame.mp3');
     hasPlayedDeadSound = false;
 
+    /**
+     * Images for the alert state of the end boss.
+     * @type {string[]}
+     */
     IMAGES_ALERT = [
         'img_pollo_locco/img/4_enemie_boss_chicken/2_alert/G5.png',
         'img_pollo_locco/img/4_enemie_boss_chicken/2_alert/G6.png',
@@ -24,6 +33,10 @@ class Endboss extends MovableObject {
         'img_pollo_locco/img/4_enemie_boss_chicken/2_alert/G12.png'
     ];
 
+    /**
+     * Images for the walking state of the end boss.
+     * @type {string[]}
+     */
     IMAGES_WALKING = [
         'img_pollo_locco/img/4_enemie_boss_chicken/1_walk/G1.png',
         'img_pollo_locco/img/4_enemie_boss_chicken/1_walk/G2.png',
@@ -31,6 +44,10 @@ class Endboss extends MovableObject {
         'img_pollo_locco/img/4_enemie_boss_chicken/1_walk/G4.png',
     ];
 
+    /**
+     * Images for the attack state of the end boss.
+     * @type {string[]}
+     */
     IMAGES_ATTACK = [
         'img_pollo_locco/img/4_enemie_boss_chicken/3_attack/G13.png',
         'img_pollo_locco/img/4_enemie_boss_chicken/3_attack/G14.png',
@@ -42,18 +59,29 @@ class Endboss extends MovableObject {
         'img_pollo_locco/img/4_enemie_boss_chicken/3_attack/G20.png'
     ];
 
+    /**
+     * Images for the hurt state of the end boss.
+     * @type {string[]}
+     */
     IMAGES_HURT = [
         'img_pollo_locco/img/4_enemie_boss_chicken/4_hurt/G21.png',
         'img_pollo_locco/img/4_enemie_boss_chicken/4_hurt/G22.png',
         'img_pollo_locco/img/4_enemie_boss_chicken/4_hurt/G23.png'
     ];
 
+    /**
+     * Images for the dead state of the end boss.
+     * @type {string[]}
+     */
     IMAGES_DEAD = [
         'img_pollo_locco/img/4_enemie_boss_chicken/5_dead/G24.png',
         'img_pollo_locco/img/4_enemie_boss_chicken/5_dead/G25.png',
         'img_pollo_locco/img/4_enemie_boss_chicken/5_dead/G26.png',
     ];
 
+    /**
+     * Initializes the end boss and loads necessary images and sounds.
+     */
     constructor() {
         super().loadImage(this.IMAGES_ALERT[0]);
         this.loadImages(this.IMAGES_ALERT);
@@ -64,19 +92,25 @@ class Endboss extends MovableObject {
         sounds.push(this.attacking_sound);
         sounds.push(this.dead_sound);
         sounds.push(this.hurt_sound);
+        sounds.push(this.win_sound);
         this.animate();
         this.x = 7500;
     }
 
+     /**
+     * Starts the animation loop for the end boss.
+     */
     animate() {
-
         setInterval(() => {
             this.i++;
             this.handleFirstContact();
             this.handleMovementAnimations();
         }, 150);
     }
-
+    
+    /**
+     * Checks for the first contact with the character and sets movement state.
+     */
     handleFirstContact() {
         if (world.character.x > 7000 && !this.hadFirstContact) {
             this.i = 0;
@@ -85,8 +119,11 @@ class Endboss extends MovableObject {
         }
     }
 
+    /**
+     * Handles animations based on the end boss's state (hurt, dead, moving).
+     */
     handleMovementAnimations() {
-        if(this.isHurt()) {
+        if(this.isHurt() && this.energy > 0) {
             this.hurtAnimaton();
             this.hurt_sound.play();
         }
@@ -95,6 +132,8 @@ class Endboss extends MovableObject {
             if(!this.hasPlayedDeadSound) {
                 this.dead_sound.play();
                 this.hasPlayedDeadSound = true;
+                this.win_sound.play();
+                stopGame();
             }
         }
         else if (this.beginToMove) {
@@ -102,6 +141,9 @@ class Endboss extends MovableObject {
         }
     }
 
+    /**
+     * Manages animations for the movement of the end boss.
+     */
     beginToMoveAnimations(){
         if (this.i < 10) {
             this.firstContactAnimation();
@@ -116,6 +158,9 @@ class Endboss extends MovableObject {
         }
     }
 
+     /**
+     * Starts the walking movement of the end boss.
+     */
     startWalking() {
         if (this.beginToMove && !this.movementInterval) {
             this.movementInterval = setInterval(() => {
@@ -124,46 +169,67 @@ class Endboss extends MovableObject {
         }
     }
 
-    stopWalking() { // lassen wir erstmal drinne, vielleicht brauchen wir das zum Beenden des intervalles, wird aktuell nirgendwo benutzt
+    /**
+     * Stops the walking movement of the end boss.
+     */
+    stopWalking() {
         if (this.movementInterval) {
             clearInterval(this.movementInterval);
             this.movementInterval = null;
         }
     };
 
+    /**
+     * Checks if the character is close to the end boss.
+     * @returns {boolean} True if close, false otherwise.
+     */
     characterCloseToEndboss() {
         let distance = this.x - world.character.x;
         return distance < 375;
     }
 
+    /**
+     * Plays the first contact animation.
+     */
     firstContactAnimation() {
         this.playAnimation(this.IMAGES_ALERT);
     }
 
+     /**
+     * Plays the attack animation.
+     */
     attackAnimation() {
         this.playAnimation(this.IMAGES_ATTACK);
     }
 
+    /**
+     * Plays the walking animation.
+     */
     walkingAnimation() {
         this.playAnimation(this.IMAGES_WALKING);
     }
 
+     /**
+     * Plays the hurt animation.
+     */
     hurtAnimaton() {
         this.playAnimation(this.IMAGES_HURT);
     }
 
+     /**
+     * Plays the hurt animation.
+     */
     hitByBottle(){
         if(!this.isInCollisionCooldown) {
             this.isInCollisionCooldown = true;
             this.lastHit = new Date().getTime();
             this.energy -= 30;
-            console.log(this.energy);
             if (this.energy < 0) {
                 this.energy = 0;
             }
         }
         setTimeout(() => {
             this.isInCollisionCooldown = false;
-        }, 100);
+        }, 250);
     }
 }

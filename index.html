@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" translate="no">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>El Pollo Loco</title>
+    <link rel="icon" type="image/x-icon" href="img_pollo_locco/img/3_enemies_chicken/chicken_normal/1_walk/1_w.png">
     <link rel="stylesheet" href="style.css">
     <script src="models/drawable-object.class.js"></script>
     <script src="models/movable-object.class.js"></script>
@@ -17,8 +18,6 @@
     <script src="models/coin-status-bar.class.js"></script>
     <script src="models/coin-collectable-object.class.js"></script>
     <script src="models/bottle-collectable-object.class.js"></script>
-    <script src="models/endscreen-object.class.js"></script>
-    <script src="models/winningscreen-object.class.js"></script>
     <script src="models/world.class.js"></script>
     <script src="models/background-object.class.js"></script>
     <script src="models/keyboard-object.class.js"></script>
@@ -26,41 +25,109 @@
     <script src="models/throwable-object-class.js"></script>
     <script src="levels/level1.js"></script>
     <script src="js/game.js"></script>
+    <script src="js/game-mobile.js"></script>
     <script src="js/audio-collection.js"></script>
+    <script src="js/check-orientation.js"></script>
 </head>
 <body>
     <h1>El Pollo Loco</h1>
-
-    <canvas id="canvas" width="720" height="480">
-
-    </canvas>
-
-    <div class="help-container d-none" id="help-container">
-        <div class="headline-container">
-            <h2>Controlls</h2>
+    <div id="fullscreen-container" class="canvas-and-controll-container">
+        <canvas class="d-none" id="canvas" width="720" height="480">
+        </canvas>
+        <img id="loosing-screen" class="endscreen-img d-none" src="img_pollo_locco/img/9_intro_outro_screens/game_over/oh no you lost!.png" alt="">
+        <img id="winning-screen" class="endscreen-img d-none" src="img_pollo_locco/img/9_intro_outro_screens/win/win_2.png" alt="">
+        <div id="desktop-fullscreen-button-container" class="desktop-fullscreen-button-container d-none">
+            <img onclick="fullscreen()" class="fullscreen-img" id="desktop-fullscreen-img" src="img_pollo_locco/img/fullscreen.svg" alt="">
+            <img onclick="exitFullscreen()" class="exit-fullscreen-img d-none" id="desktop-exit-fullscreen-img" src="img_pollo_locco/img/exitFullscreen.svg" alt="">
         </div>
-        <div class="controll-instruction-container">
-            <p>Move Right = Press RIGHT ARROW KEY</p>
-            <p>Move Left = Press LEFT ARROW KEY</p>
-            <p>Jump = Press SPACE</p>
-            <p>Throw Bottle = Press "D"</p>
-            <p>Hurt Chicken = Jump on Chicken</p>
-            <p>Hurt Endboss = Throw Salsabottles on Endboss</p>
+        <div id="mobile-options-container" class="mobile-options-container">
+            <div id="enter-fullscreen-and-toggle-mobile-music-and-soundeffect-container" class="enter-fullscreen-and-toggle-mobile-music-and-soundeffect-container d-none">
+                <button id="mute-music-mobile-button" class="toggle-soundeffects-and-music-mobile-button"><img class="toggle-soundeffects-and-music-img" src="img_pollo_locco/img/muteMusic.png" alt=""></button>
+                <button id="mute-soundeffects-mobile-button" class="toggle-soundeffects-and-music-mobile-button"><img class="toggle-soundeffects-and-music-img" src="img_pollo_locco/img/muteSoundeffects.svg" alt=""></button>
+                <img onclick="fullscreen()" class="fullscreen-img" id="fullscreen-img" src="img_pollo_locco/img/fullscreen.svg" alt="">
+                <img onclick="exitFullscreen()" class="exit-fullscreen-img d-none" id="exit-fullscreen-img" src="img_pollo_locco/img/exitFullscreen.svg" alt="">
+            </div>
+        </div>
+        <div id="mobile-start-game-and-controll-container" class="mobile-start-game-and-controll-container d-none">
+            <div id="controll-container-mobile" class="start-game-and-controll-mobile-button-container">
+                <button class="play-button-mobile" id="play-button-mobile">></button>
+                <button class="mobile-controll-button" onclick="toggleMobileControlls()" id="open-controlls-button-mobile"><img class="mobile-controlls-img" src="img_pollo_locco/img/settings.png" alt=""></button>
+                <button class="mobile-controll-button" onclick="toggleMobileImprint()" id="open-imprint-button-mobile">i</button>
+            </div>
+        </div>
+        <div id="mobile-controlls-container" class="mobile-controlls-container d-none">
+            <div class="forward-and-backward-buttons-container">
+                <button id="mobile-btn-left"><</button> 
+                <button id="mobile-btn-right">></button>
+            </div>
+            <div class="jump-button-and-throw-button-container">
+                <button id="mobile-btn-jump">Jump</button>
+                <button id="mobile-btn-throw">Throw Bottle</button>
+            </div>
+        </div>
+    
+        <div class="help-container d-none" id="help-container">
+            <div class="headline-container">
+                <h2>Controlls</h2>
+            </div>
+            <div class="controll-instruction-container">
+                <p>MOVE RIGHT = RIGHT ARROW KEY</p>
+                <p>MOVE LEFT =  LEFT ARROW KEY</p>
+                <p>JUMP = SPACE</p>
+                <p>THROW BOTTLE = "D" INFO: To be able to throw bottles you first need to collect them!</p>
+                <p>HURT CHICKEN = Jump on Chicken</p>
+                <p>HURT ENDBOSS = Throw Salsabottles on Endboss</p>
+            </div>
+            <button onclick="toggleMobileControlls()" id="exit-controlls-button-mobile" class="exit-mobile-controll-instructions d-none"><img class="back-mobile-controlls-img" src="img_pollo_locco/img/backArrow.png" alt=""></button>
+        </div>
+        <div class="imprint-container d-none" id="imprint-container">
+            <div class="headline-container">
+                <h2>Impressum</h2>
+            </div>
+            <div class="imprint-content-container">
+                <p>Angaben gemäß Paragraph 5 DDG</p>
+                <div>
+                    <p>Patrick Gogolin</p>
+                    <p>Sophie-Schoop-Weg 58</p>
+                    <p>21035 Hamburg</p>
+                </div>
+                <div>
+                    <p>Vertreten durch:</p>
+                    <p>Patrick Gogolin</p>
+                </div>
+                <div>
+                    <p>Kontakt:</p>
+                    <p>Telefon: +49-1725387139</p>
+                    <p>E-Mail: patrick.gogolin@hotmail.com</p>
+                </div>
+            </div>
+            <button onclick="toggleMobileImprint()" id="exit-imprint-button-mobile" class="exit-mobile-imprint d-none"><img class="back-mobile-controlls-img" src="img_pollo_locco/img/backArrow.png" alt=""></button>
+        </div>
+        <div id="restart-game-and-back-to-homescreen-button-container" class="restart-game-and-back-to-homescreen-button-container d-none">
+            <button onclick="restartGame()" id="restart-game-button" class="restart-game-button">Try Again!</button>
+            <button onclick="backToHome()" id="home-button" class="back-to-homescreen-button">Home</button>
         </div>
     </div>
 
-    <div class="container-for-buttons">
-        <button class="button" id="play-button">Play</button>
-        <button class="button" id="pause-music-button" disabled>Turn Music off</button>
-        <button class="button" id="pause-soundeffects-button" disabled>Turn Soundeffects off</button>
-        <button onclick="toggleControlls()" class="button" id="help-button">Controlls</button>
+    <div class="container-for-buttons" id="container-for-buttons">
+        <div class="desktop-play-help-imprint-button-container" id="desktop-play-help-imprint-button-container">
+            <button class="button" onclick="toggleControlls()" id="help-button">Controlls</button>
+            <button class="button" id="play-button">Play</button>
+            <button class="button" onclick="toggleImprint()" id="imprint-button">Impressum</button>
+        </div>
+        <div class="desktop-music-and-soundeffects-button-container d-none" id="desktop-music-and-soundeffects-button-container">
+            <button class="button" id="pause-music-button" disabled>Turn Music off</button>
+            <button class="button" id="pause-soundeffects-button" disabled>Turn Soundeffects off</button>
+        </div>
     </div>
 
+    
     <div class="overlay-container d-none" id="overlay">
         <div class="rotate-your-device-img-container">
             <img src="img_pollo_locco/img/rotateDevice.png" alt="">
         </div>
 
     </div>
+   
 </body>
 </html>

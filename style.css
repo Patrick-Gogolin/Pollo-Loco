@@ -31,20 +31,205 @@ h1 {
 h2 {
     font-size: 3rem;
     color: #FFDE01;
-    margin-bottom: 0.75em;
+    padding: 0.5em 0em 0em 0em;
+}
+
+.canvas-and-controll-container {
+    background-image: url(img_pollo_locco/img/9_intro_outro_screens/start/startscreen_1.png);
+    background-position: center;
+    background-size: cover;
+    width: 720px;
+    height: 480px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.no-bg {
+    background-image: none;
+}
+
+.endscreen-img {
+    position: absolute;
+    top: 0;
+    border-bottom: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.fullscreen-img,
+.exit-fullscreen-img {
+    width: 48px;
+    height: 48px;
+    cursor: pointer;
+}
+
+.mobile-start-game-and-controll-container {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.mobile-options-container,
+.desktop-fullscreen-button-container {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.enter-fullscreen-and-toggle-mobile-music-and-soundeffect-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1em;
+}
+
+.mobile-controlls-container {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.forward-and-backward-buttons-container {
+    display: flex;
+    align-items: center;
+    gap: 1.5em;
+    padding: 0em 0em 0.5em 1.5em;
+}
+
+.forward-and-backward-buttons-container button {
+    font-family: 'zabars', Arial, Helvetica, sans-serif;
+    font-size: 1rem;
+    padding: 0.5em 1.25em;
+    margin-top: 1em;
+    background-color: #FFDE01;
+    border: solid 3px black;
+    border-radius: 50%;
+}
+
+.jump-button-and-throw-button-container {
+    display: flex;
+    align-items: center;
+    gap: 1.5em;
+    padding: 0em 1.5em 0.5em 0em;
+}
+
+.jump-button-and-throw-button-container button {
+    font-family: 'zabars', Arial, Helvetica, sans-serif;
+    font-size: 1rem;
+    padding: 0.25em 1em;
+    margin-top: 1em;
+    background-color: #FFDE01;
+    border: solid 5px black;
+    border-radius: 50%;
+}
+
+.start-game-and-controll-mobile-button-container {
+    padding: 1em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5em;
+}
+
+.start-game-and-controll-mobile-button-container button {
+    font-family: 'zabars', Arial, Helvetica, sans-serif;
+    font-size: 1.25rem;
+    padding: 0.25em 1em;
+    background-color: #FFDE01;
+    border: solid 2px black;
+}
+
+.play-button-mobile {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    font-size: 1.5rem;
+}
+
+.restart-game-and-back-to-homescreen-button-container {
+    position: absolute;
+    bottom: 1em;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: center;
+    gap: 1em;
+}
+
+.restart-game-button,
+.back-to-homescreen-button {
+    font-family: 'zabars', Arial, Helvetica, sans-serif;
+    font-size: 1.25rem;
+    padding: 0.25em 1em;
+    background-color: #FFDE01;
+    border: solid 5px black;
+    cursor: pointer;
+}
+
+.toggle-soundeffects-and-music-mobile-button {
+    font-family: 'zabars', Arial, Helvetica, sans-serif;
+    font-size: 1.25rem;
+    padding: 0.25em 0.5em;
+    background-color: #FFDE01;
+    border: solid 2px black;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.toggle-soundeffects-and-music-img {
+    width: 24px;
+    height: 24px;
+}
+
+.mobile-controll-button,
+.exit-mobile-controll-instructions,
+.exit-mobile-imprint {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+.mobile-controlls-img,
+.back-mobile-controlls-img {
+    width: 20px;
+    height: 20px;
 }
 
 canvas {
-    background-image: url(img_pollo_locco/img/9_intro_outro_screens/start/startscreen_1.png);
-    background-position: center;
-    background-size: 720px 480px;
     display: block;
+    position: relative;
+    width: 100%;
+    height: 100%;
 }
 
-.help-container {
-    width: 720px;
-    height: 480px;
-    background-color: rgba(122, 122, 122, 0.7);
+.help-container,
+.imprint-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(122, 122, 122, 0.75);
 }
 
 .headline-container {
@@ -53,19 +238,46 @@ canvas {
     justify-content: center;
 }
 
-.controll-instruction-container {
+.controll-instruction-container,
+.imprint-content-container {
     display: flex;
     flex-direction: column;
     width: calc(100%-1em);
-    padding: 0em 1em;
-    font-size: 1.5rem;
+    padding: 1em 1em;
+    font-size: 1.4rem;
     gap: 2em;
     color: #FFDE01;
 }
 
+.exit-mobile-controll-instructions,
+.exit-mobile-imprint {
+    position: absolute;
+    right: 0;
+    top: 0;
+    font-family: 'zabars', Arial, Helvetica, sans-serif;
+    font-size: 1rem;
+    padding: 0.25em 1em;
+    background-color: #FFDE01;
+    border: solid 5px black;
+    margin: 1em;
+}
+
+.controll-instruction-container p {
+    letter-spacing: 0.5px;
+}
+
+
 .container-for-buttons {
+    width: 720px;
+}
+
+.desktop-play-help-imprint-button-container,
+.desktop-music-and-soundeffects-button-container {
+    width: 100%;
     display: flex;
-    gap: 1em;
+    align-items: center;
+    justify-content: space-evenly
+
 }
 
 .button {
@@ -110,7 +322,33 @@ canvas {
     display: none;
 }
 
-@media only screen and (max-width: 720px) {
+.force-hidden {
+    display: none !important;
+}
+
+@media only screen and (max-width: 950px) {
+    .container-for-buttons {
+        display: none;
+    }
+
+    .imprint-content-container {
+        font-size: 1.35rem;
+    }
+
+    .imprint-content-container {
+        padding: 0.5em 1em 0em 1em
+    }
+
+    .mobile-start-game-and-controll-container {
+        display: flex;
+    }
+    
+}
+
+@media only screen and (max-width: 850px) {
+    .canvas-and-controll-container {
+        width: 100%;
+    }
     canvas {
         width: 100%;
     }
@@ -119,11 +357,54 @@ canvas {
 
 @media only screen and (max-height: 480px) {
     canvas {
-        height: 100vh;
+        height: 100dvh;
+    }
+
+    .canvas-and-controll-container {
+        height: 100dvh;
+    }
+
+    h2 {
+        font-size: 2.5rem;
+    }
+
+    .controll-instruction-container {
+        gap: 1.5rem;
+        padding: 0.5em 1em 0em 1em;
+    }
+
+    .controll-instruction-container p {
+        font-size: 1.1rem;
+    }
+    
+    .imprint-content-container {
+        gap: 1.5em;
+        font-size: 1.5rem;
+        padding: 0.5em 1em 0em 1em;
     }
 
     h1 {
         display: none;
     }
+
+    @media only screen and (max-height: 400px) {
+        h2 {
+            font-size: 2.25rem;
+        }
     
+        .controll-instruction-container {
+            gap: 1.5rem;
+            padding: 0.5em 1em 0em 1em;
+        }
+    
+        .controll-instruction-container p {
+            font-size: 1rem;
+        }
+
+         .imprint-content-container {
+        gap: 1.35em;
+        font-size: 1.25rem;
+        padding: 0.5em 1em 0em 1em;
+    }    
+}
 }
