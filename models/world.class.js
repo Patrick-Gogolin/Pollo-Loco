@@ -284,7 +284,7 @@ class World {
             if (this.character.isCollidingWithCollectableBottle(bottle)) {
                 let bottleToStore = new ThrowableObject();
                 this.throwableObjects.push(bottleToStore);
-                this.removeBottleFromWorld(index);
+                this.level.bottles.splice(index, 1);
             }
         });
     }
@@ -295,7 +295,7 @@ class World {
     storeCoinInInventory() {
         this.level.coins.forEach((coin, index) => {
             if (this.character.isCollidingWithCoin(coin)) {
-                this.removeCoinFromWorld(index)
+                this.level.coins.splice(index, 1);
             }
         })
     }
@@ -335,24 +335,6 @@ class World {
     */
     updateBottleStatusBar() {
         this.bottleStatusBar.setBottleAmount(this.character.bottles);
-    }
-
-    /**
-    * Removes a coin from the world at the specified index.
-    * 
-    * @param {number} index - The index of the coin to be removed from the level's coins array.
-    */
-    removeCoinFromWorld(index) {
-        this.level.coins.splice(index, 1)
-    }
-
-    /**
-    * Removes a bottle from the world at the specified index.
-    * 
-    * @param {number} index - The index of the bottle to be removed from the level's bottles array.
-    */
-    removeBottleFromWorld(index) {
-        this.level.bottles.splice(index, 1)
     }
 
     /**

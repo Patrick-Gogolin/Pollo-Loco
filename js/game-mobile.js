@@ -168,34 +168,42 @@ function toggleMobileImprint() {
  */
 function assignmentOfTouchToMobileButtons() {
     document.getElementById("mobile-btn-right").addEventListener('touchstart', (e) => {
+        e.preventDefault();
         keyboard.RIGHT = true;
     });
 
     document.getElementById("mobile-btn-right").addEventListener('touchend', (e) => {
+        e.preventDefault();
         keyboard.RIGHT = false;
     });
 
     document.getElementById("mobile-btn-left").addEventListener('touchstart', (e) => {
+        e.preventDefault();
         keyboard.LEFT = true;
     });
 
     document.getElementById("mobile-btn-left").addEventListener('touchend', (e) => {
+        e.preventDefault();
         keyboard.LEFT = false;
     });
 
     document.getElementById("mobile-btn-jump").addEventListener('touchstart', (e) => {
+        e.preventDefault();
         keyboard.SPACE = true;
     });
 
     document.getElementById("mobile-btn-jump").addEventListener('touchend', (e) => {
+        e.preventDefault();
         keyboard.SPACE = false;
     });
 
     document.getElementById("mobile-btn-throw").addEventListener('touchstart', (e) => {
+        e.preventDefault();
         keyboard.D = true;
     });
 
     document.getElementById("mobile-btn-throw").addEventListener('touchend', (e) => {
+        e.preventDefault();
         keyboard.D = false;
     });
 }

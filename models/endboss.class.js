@@ -6,7 +6,7 @@ class Endboss extends MovableObject {
 
     height = 400;
     width = 250;
-    speed = 1;
+    speed = 2.5;
     y = 50;
     hadFirstContact = false;
     beginToMove = false;
@@ -105,7 +105,7 @@ class Endboss extends MovableObject {
             this.i++;
             this.handleFirstContact();
             this.handleMovementAnimations();
-        }, 150);
+        }, 100);
     }
     
     /**
@@ -162,10 +162,10 @@ class Endboss extends MovableObject {
      * Starts the walking movement of the end boss.
      */
     startWalking() {
-        if (this.beginToMove && !this.movementInterval) {
+        if (this.beginToMove && !this.movementInterval && !this.isPaused) {
             this.movementInterval = setInterval(() => {
                 this.decreaseXCoordinate();
-            }, 1000 / 60);
+            }, 1000 / 120);
         }
     }
 
