@@ -89,10 +89,6 @@ class Endboss extends MovableObject {
         this.loadImages(this.IMAGES_ATTACK);
         this.loadImages(this.IMAGES_HURT);
         this.loadImages(this.IMAGES_DEAD);
-        sounds.push(this.attacking_sound);
-        sounds.push(this.dead_sound);
-        sounds.push(this.hurt_sound);
-        sounds.push(this.win_sound);
         this.animate();
         this.x = 7500;
     }
@@ -125,14 +121,14 @@ class Endboss extends MovableObject {
     handleMovementAnimations() {
         if(this.isHurt() && this.energy > 0) {
             this.hurtAnimaton();
-            this.hurt_sound.play();
+            playSoundeffects(this.hurt_sound);
         }
         else if(this.isDead()) {
             this.playAnimationWhenDead(this.IMAGES_DEAD);
             if(!this.hasPlayedDeadSound) {
-                this.dead_sound.play();
+                playSoundeffects(this.dead_sound);
                 this.hasPlayedDeadSound = true;
-                this.win_sound.play();
+                playSoundeffects(this.win_sound);
                 stopGame();
             }
         }
@@ -147,7 +143,7 @@ class Endboss extends MovableObject {
     beginToMoveAnimations(){
         if (this.i < 10) {
             this.firstContactAnimation();
-            this.attacking_sound.play();
+            playSoundeffects(this.attacking_sound);
         } else {
             if (this.characterCloseToEndboss()) {
                 this.attackAnimation();

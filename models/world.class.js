@@ -13,7 +13,6 @@ class World {
     coinStatusBar = new CoinStatusBar();
     throwableObjects = [];
     thrownObjects = [];
-    main_music = new Audio('audio/mainMusic.mp3');
     lastThrowTime = 0;
     throwCooldown = 1000;
 
@@ -24,14 +23,11 @@ class World {
         this.draw();
         this.setWorld();
         this.run();
-        this.main_music.loop = true;
-        this.main_music.play();
     }
 
     /**
      * Sets the world property of the character to this instance of World.
      */
-
     setWorld() {
         this.character.world = this;
     }
@@ -59,8 +55,8 @@ class World {
      */
     stopMainMusicIfCharacterIsDeadOrWinGame() {
         if (this.character.energy <= 0 || this.endbossDead()) {
-            this.main_music.pause();
-            this.main_music.currentTime = 0;
+            endOfGame = true;
+            main_music.volume = 0;
         }
     }
 
@@ -89,12 +85,10 @@ class World {
             this.updateBottleStatusBar();
             this.thrownObjects.push(bottleFromInventory);
             this.throwableObjects.splice(this.throwableObjects.length - 1, 1);
-
             if (!bottleFromInventory.isThrown) {
                 bottleFromInventory.throw(this.character.x + 100, this.character.y + 100);
                 bottleFromInventory.isThrown = true;
             }
-
             this.lastThrowTime = now;
             this.keyboard.D = false;
         }
@@ -108,9 +102,7 @@ class World {
         this.thrownObjects.forEach(bottle => {
             if (bottle.y > groundLevel) {
                 bottle.broken = true;
-                if (soundeffectsOn) {
-                    bottle.break_sound.play();
-                }
+                playSoundeffects(bottle.break_sound);
                 this.removeThrowableBottleFromWorld(bottle);
             }
         });
@@ -138,9 +130,7 @@ class World {
             if (enemy.isCollidingWithThrownBottle(enemy, bottle)) {
                 enemy.hitByBottle();
                 bottle.broken = true;
-                if (soundeffectsOn) {
-                    bottle.break_sound.play();
-                }
+                playSoundeffects(bottle.break_sound);
                 enemy.screams();
                 this.removeThrowableBottleFromWorld(bottle);
             }
@@ -158,9 +148,7 @@ class World {
             if (endboss.thrownBottleIsCollidingWithEndboss(endboss, bottle)) {
                 endboss.hitByBottle();
                 bottle.broken = true;
-                if (soundeffectsOn) {
-                    bottle.break_sound.play();
-                }
+                playSoundeffects(bottle.break_sound);
                 this.removeThrowableBottleFromWorld(bottle);
             }
         });
@@ -221,7 +209,7 @@ class World {
                 enemy.screams();
             } else {
                 this.character.hitBySmallChicken();
-                this.updateHealthStatusBar();
+                this.healthStatusBar.setPercentage(this.character.energy);
             }
         });
     }
@@ -234,14 +222,13 @@ class World {
     handleCharacterCollisionsWithChicken(enemiesArray) {
         enemiesArray.forEach(enemy => {
             if (!this.character.isCollidingWithNormalChicken(enemy)) return;
-    
             if (this.character.characterIsFalling() && enemy.energy > 0) {
                 this.character.characterJump();
                 enemy.hitByCharacter();
                 enemy.screams();
             } else {
                 this.character.hitByChicken();
-                this.updateHealthStatusBar();
+                this.healthStatusBar.setPercentage(this.character.energy);
             }
         });
     }
@@ -254,7 +241,7 @@ class World {
         this.level.endboss.forEach(endboss => {
             if (this.character.isCollidingWithEndboss(endboss)) {
                 this.character.hitByEndboss();
-                this.updateHealthStatusBar();
+                this.healthStatusBar.setPercentage(this.character.energy);
             }
         })
     }
@@ -317,13 +304,6 @@ class World {
     }
 
     /**
-    * Updates the health status bar to reflect the current energy level of the character. Sets the health status bar's percentage based on the character's energy.
-    */
-    updateHealthStatusBar() {
-        this.healthStatusBar.setPercentage(this.character.energy);
-    }
-
-    /**
     * Updates the coin status bar to reflect the current number of coins collected by the character. Sets the coin status bar's amount based on the character's coins.
     */
     updateCoinStatusBar() {
@@ -342,15 +322,11 @@ class World {
     */
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
         this.drawBackground();
         this.drawStatusBars();
         this.drawMovableObjects();
-
         let self = this;
-        requestAnimationFrame(function () {
-            self.draw();
-        });
+        requestAnimationFrame(() => self.draw());
     }
 
     /**
@@ -373,8 +349,7 @@ class World {
     }
 
     /**
-    * Draws all movable objects in the game on the canvas. This includes the main character, various enemy types (chickens, endboss, small chickens), collectable items (coins and bottles), and thrown objects. 
-    * The function translates the context to account for camera movement.
+    * Draws all movable objects in the game on the canvas. This includes the main character, various enemy types (chickens, endboss, small chickens), collectable items (coins and bottles), and thrown objects.
     */
     drawMovableObjects() {
         this.ctx.translate(this.camera_x, 0);

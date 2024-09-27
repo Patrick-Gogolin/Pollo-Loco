@@ -352,8 +352,11 @@ class MovableObject extends DrawableObject {
     * and then plays the hurt sound from the start.
     */
     screams() {
-        this.hurt_sound.pause();
-        this.hurt_sound.currentTime = 0;
-        this.hurt_sound.play();
+        let savedSoundEffectState = localStorage.getItem('soundEffectState');
+        if(savedSoundEffectState === "on") {
+            this.hurt_sound.pause();
+            this.hurt_sound.currentTime = 0;
+            this.hurt_sound.play();
+        }
     }
 }

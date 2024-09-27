@@ -290,6 +290,11 @@ canvas {
     transition: transform .3s ease-in-out;
 }
 
+.mute-music-desktop-img {
+    width: 24px;
+    height: 24px;
+}
+
 .button:hover {
     cursor: pointer;
     background-color: #f9e878;

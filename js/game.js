@@ -4,6 +4,7 @@ let keyboard = new KeyboardObject();
 let dPressed = false;
 let controllsOpen = false;
 let playedOnMobile = false;
+let endOfGame = false;
 
 /**
  * Initializes the game by selecting the canvas element and creating a new instance of the World object with the provided canvas and keyboard inputs.
@@ -16,6 +17,7 @@ let playedOnMobile = false;
 function init() {
     canvas = document.getElementById('canvas');
     world = new World(canvas, keyboard);
+    playMainMusic();
 }
 
 /**

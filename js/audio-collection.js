@@ -1,7 +1,8 @@
 let soundeffectsOn = true;
 let sounds = [];
 let main_music = new Audio('audio/mainMusic.mp3');
-let mainMusicIsPlaying = true;
+let savedMusicState = null;
+let savedSoundEffectState = null;
 
 /**
  * Adds an event listener for the 'DOMContentLoaded' event to ensure that
@@ -30,10 +31,11 @@ document.addEventListener('DOMContentLoaded', () => {
  * @returns {void}
  */
 function toggleMusic(button, event) {
-    if (mainMusicIsPlaying) {
+    savedMusicState = localStorage.getItem('musicState');
+    if (savedMusicState === "on") {
         turnMusicOff(button, event);
     }
-    else if (!mainMusicIsPlaying) {
+    else if (savedMusicState === "off") {
         turnMusicOn(button, event);
     }
 }
@@ -47,9 +49,10 @@ function toggleMusic(button, event) {
  * @returns {void}
  */
 function turnMusicOn(button, event) {
-    world.main_music.play();
+    main_music.play();
+    main_music.loop = true;
     button.innerText = "Turn Music Off";
-    mainMusicIsPlaying = true;
+    localStorage.setItem('musicState', 'on');
     event.target.blur();
 }
 
@@ -62,9 +65,9 @@ function turnMusicOn(button, event) {
  * @returns {void}
  */
 function turnMusicOff(button, event) {
-    world.main_music.pause();
+    main_music.pause();
     button.innerText = "Turn Music On";
-    mainMusicIsPlaying = false;  
+    localStorage.setItem('musicState', 'off');
     event.target.blur();
 }
 
@@ -91,10 +94,11 @@ document.addEventListener('DOMContentLoaded', () => {
  * @returns {void}
  */
 function toggleSoundEffects(button, event) {
-    if(soundeffectsOn) {
+    savedSoundEffectState = localStorage.getItem('soundEffectState');
+    if (savedSoundEffectState === "on") {
         muteSounds(button, event);
     }
-    else if(!soundeffectsOn) {
+    else if (savedSoundEffectState === "off") {
         unmuteSounds(button, event);
     }
 }
@@ -107,14 +111,12 @@ function toggleSoundEffects(button, event) {
  * 
  * @returns {void} This function does not return a value.
  */
-let muteSounds = (button, event) => {
-    sounds.forEach(sound => {
-        sound.volume = 0; 
-    });
-    soundeffectsOn = false;
+function muteSounds(button, event) {
     button.innerText = "Turn Soundeffects on";
+    localStorage.setItem('soundEffectState', 'off');
     event.target.blur();
 };
+
 
 /**
  * Restores the volume of all sound effects and updates the button text to indicate the current state.
@@ -125,12 +127,9 @@ let muteSounds = (button, event) => {
  * @returns {void} This function does not return a value.
  *
  */
-let unmuteSounds = (button, event) => {
-    sounds.forEach(sound => {
-        sound.volume = 1;
-    });
-    soundeffectsOn = true;
+function unmuteSounds(button, event) {
     button.innerText = "Turn Soundeffects off";
+    localStorage.setItem('soundEffectState', 'on');
     event.target.blur();
 };
 
@@ -155,10 +154,11 @@ document.addEventListener('DOMContentLoaded', () => {
  * @returns {void} This function does not return a value.
  */
 function toggleMusicMobile() {
-    if (mainMusicIsPlaying) {
+    savedMusicState = localStorage.getItem('musicState');
+    if (savedMusicState === "on") {
         turnMusicOffMobile();
     }
-    else if (!mainMusicIsPlaying) {
+    else if (savedMusicState === "off") {
         turnMusicOnMobile();
     }
 }
@@ -169,8 +169,9 @@ function toggleMusicMobile() {
  * @returns {void} This function does not return a value.
  */
 function turnMusicOnMobile() {
-    world.main_music.play();
-    mainMusicIsPlaying = true;
+    main_music.play();
+    main_music.loop = true;
+    localStorage.setItem('musicState', 'on');
 }
 
 /**
@@ -179,8 +180,8 @@ function turnMusicOnMobile() {
  * @returns {void} This function does not return a value.
  */
 function turnMusicOffMobile() {
-    world.main_music.pause();
-    mainMusicIsPlaying = false;
+    main_music.pause();
+    localStorage.setItem('musicState', 'off');
 }
 
 /**
@@ -203,10 +204,11 @@ document.addEventListener('DOMContentLoaded', () => {
  * @returns {void} This function does not return a value.
  */
 function toggleSoundEffectsMobile() {
-    if(soundeffectsOn) {
+    savedSoundEffectState = localStorage.getItem('soundEffectState');
+    if(savedSoundEffectState === "on") {
         muteSoundsMobile();
     }
-    else if(!soundeffectsOn) {
+    else if(savedSoundEffectState === "off") {
         unmuteSoundsMobile();
     }
 }
@@ -216,21 +218,96 @@ function toggleSoundEffectsMobile() {
  *
  * @returns {void} This function does not return a value.
  */
-let muteSoundsMobile = () => {
-    sounds.forEach(sound => {
-        sound.volume = 0; 
-    });
-    soundeffectsOn = false;
-};
+function muteSoundsMobile() {
+    localStorage.setItem('soundEffectState', 'off');
+}
 
 /**
  * Restores the volume of all sound effects on mobile devices by setting their volume to one.
  *
  * @returns {void} This function does not return a value.
  */
-let unmuteSoundsMobile = () => {
-    sounds.forEach(sound => {
-        sound.volume = 1;
-    });
-    soundeffectsOn = true;
-};
+function unmuteSoundsMobile() {
+    localStorage.setItem('soundEffectState', 'on');
+} 
+
+/**
+ * Initializes default states for music and sound effects in localStorage on page load.
+ * 
+ * This event listener waits for the DOM content to be fully loaded before checking the `musicState` 
+ * and `soundEffectState` values in localStorage. If these values are not present (e.g., on the first visit), 
+ * it sets both `musicState` and `soundEffectState` to 'on' as default values.
+ * 
+ * @event DOMContentLoaded
+ * 
+ * @returns {void} This function does not return a value.
+ */
+document.addEventListener('DOMContentLoaded', () => {
+    savedMusicState = localStorage.getItem('musicState');
+    savedSoundEffectState = localStorage.getItem('soundEffectState');
+
+    if (savedMusicState === null) {
+        localStorage.setItem('musicState', 'on');
+    }
+    if (savedSoundEffectState === null) {
+        localStorage.setItem('soundEffectState', 'on');
+    }
+});
+
+/**
+ * Plays or pauses the main background music based on the saved state in localStorage.
+ * 
+ * @function playMainMusic
+ * @returns {void}
+ */
+function playMainMusic() {
+  let musicButton = document.getElementById('pause-music-button');
+  savedMusicState = localStorage.getItem('musicState');
+  main_music.currentTime = 0;
+  main_music.volume = 1;
+
+  if (savedMusicState === 'on') {
+      main_music.play();
+      main_music.loop = true;
+      musicButton.innerText = "Turn Music Off";
+  } else {
+      main_music.pause();
+      musicButton.innerText = "Turn Music On";
+  }
+  labelSoundeffectButton();
+}
+
+/**
+ * Updates the text label of the sound effects toggle button based on the sound effects state.
+ * 
+ * This function retrieves the sound effect state from the local storage (under 'soundEffectState')
+ * and updates the button text accordingly. If sound effects are enabled ('on'), it sets the button label 
+ * to "Turn Soundeffects off". Otherwise, it sets the label to "Turn Soundeffects on".
+ * 
+ * @returns {void} This function does not return a value.
+ */
+function labelSoundeffectButton() {
+    let soundeffectButton = document.getElementById('pause-soundeffects-button');
+    savedSoundEffectState = localStorage.getItem('soundEffectState');
+    if(savedSoundEffectState === "on") {
+        soundeffectButton.innerText = "Turn Soundeffects off";
+    }
+    else {
+        soundeffectButton.innerText = "Turn Soundeffects on";
+    }
+}
+
+/**
+ * Plays the provided sound effect if the sound effects are enabled in the local storage.
+ * 
+ * This function checks the state of the sound effects (stored in local storage under 'soundEffectState').
+ * If the state is set to "on", it plays the provided sound effect.
+ * 
+ * @param {HTMLAudioElement} sound - The sound effect to be played. It should be an instance of the HTMLAudioElement class.
+ */
+function playSoundeffects(sound) {
+    let savedSoundEffectState = localStorage.getItem('soundEffectState');
+        if(savedSoundEffectState === "on") {
+            sound.play();
+        }
+}
